@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-folder_path = "/Users/emmawrenn/Downloads/olympics_athletes_dataset.csv"
+folder_path = "SET PATH"
 dataframe = pd.read_csv(folder_path)
 print(dataframe.head())
 

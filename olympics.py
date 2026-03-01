@@ -1,7 +1,7 @@
 import os, pandas as pd, matplotlib.pyplot as plt, numpy as np
 
 
-folder_path = "/Users/emmawrenn/Downloads/olympics_athletes_dataset.csv"
+folder_path = "SET PATH"
 dataframe = pd.read_csv(folder_path)
 print(dataframe.head())
 

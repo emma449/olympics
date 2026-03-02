@@ -38,5 +38,30 @@ def bmi_by_sport(dataframe):
 	plt.suptitle('Average Olympic athlete BMI by sport')
 	plt.tight_layout()
 	plt.show()
+	return dataframe
+	
+	#data = dataframe returned from bmi_by_sport
+	def predict_medal(data, sport):
+	sport_data = data[data['sport']==sport]
+	sport_data['past_medalist'] = sport_data['total_medals_won'].apply(lambda x: 1 if x>=1 else 0)
 
-bmi_by_sport(dataframe)
+	sport_data['month_of_birth'] = sport_data['date_of_birth'].apply(lambda x: int(x[5:7]))
+
+	label_encoder = LabelEncoder()
+	categories = ['gender', 'nationality', 'country_name', 'event', 'is_record_holder']
+	for i in range(len(categories)):
+		sport_data[f'{categories[i]}_encoded'] = label_encoder.fit_transform(sport_data[f'{categories[i]}'])
+	print(sport_data.head())
+
+	features = ['gender_encoded', 'age', 'nationality_encoded', 'country_name_encoded', 'event_encoded', 'year', 'total_olympics_attended', 'country_total_gold', 'country_total_medals', 'country_first_participation', 'country_best_rank', 'is_record_holder_encoded', 'height_cm', 'weight_kg', 'BMI', 'month_of_birth']
+	x = sport_data[features]
+	y = sport_data['past_medalist']
+	x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=16)
+	model = LinearRegression()
+	model.fit(x_train, y_train)
+	y_pred = model.predict(x_test)
+	mae = metrics.mean_absolute_error(y_test, y_pred)
+	print(f'mean absolute error for linear regression: {mae}')
+	return sport_data
+
+
